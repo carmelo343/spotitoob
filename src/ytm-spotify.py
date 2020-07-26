@@ -1,21 +1,9 @@
-from googleapiclient.discovery import build
-import os
-
-apiKey = os.environ['API_KEY']
-youtube = build('youtube', 'v3', developerKey=apiKey)
+import youtube
 
 def main():
-    print("Enter playlist id: ")
-    playlistId = input()
-
-    request = youtube.playlistItems().list(
-        part="snippet",
-        maxResults=100,
-        playlistId=playlistId
-    )
-    response = request.execute()
-
-    print(response)
+    songList = youtube.getSongList('PL0m_RB_7CwlAU66D3XDZpVquBgt7psmoi')
+    for song in songList:
+        print(song)
 
 
 if __name__ == "__main__":
