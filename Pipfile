@@ -9,6 +9,7 @@ rope = "*"
 
 [packages]
 google-api-python-client = "*"
+youtube-dl = "*"
 
 [requires]
 python_version = "3.8"
