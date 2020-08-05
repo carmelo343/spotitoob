@@ -1,5 +1,6 @@
 from googleapiclient.discovery import build
 import youtube_dl
+import os
 
 
 class Song:
@@ -8,11 +9,10 @@ class Song:
     self.artist = artist
 
 class YoutubeClient:
-    def __init__(self, api_key):
+    def __init__(self):
         #set a custom agent (use facebook's web crawler)
         youtube_dl.utils.std_headers['User-Agent'] = "facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)"
-        self.youtube_client = build('youtube', 'v3', developerKey=api_key)
-
+        self.youtube_client = build('youtube', 'v3', developerKey=os.getenv("YOUTUBE_API_KEY"))
 
     def _get_video_ids(self, playlist_id):
         video_ids = []
