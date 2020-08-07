@@ -21,19 +21,22 @@ class SpotifyClient:
         response_json = response.json()
         return response_json
 
-    def search_song(self, track, artist):
-        query = urllib.parse.quote(f"{track} {artist}")
-        url = f"https://api.spotify.com/v1/search?q={query}&type=track"
-        response = requests.get(url, 
-            headers = {
-                "Content-Type": "application/json",
-                "Authorization": f"Bearer {self.auth_token}"
-            }
-        )
+    def get_song_ids(self, songs):
+        song_ids = []
+        for song in songs:
+            query = urllib.parse.quote(f"{song.track} {song.artist}")
+            url = f"https://api.spotify.com/v1/search?q={query}&type=track"
+            response = requests.get(url, 
+                headers = {
+                    "Content-Type": "application/json",
+                    "Authorization": f"Bearer {self.auth_token}"
+                }
+            )
+            reponse_json = response.json()
+            song_id = reponse_json['tracks']['items'][0]['id']
+            song_ids.append(song_id)
 
-        reponse_json = response.json()
-        return reponse_json
-
+        return song_ids
 
 
 

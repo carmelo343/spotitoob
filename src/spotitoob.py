@@ -6,11 +6,11 @@ def main():
     # YOUTUBE
     youtube = youtube_client.YoutubeClient()
     youtube_playlist_id = 'PL0m_RB_7CwlAU66D3XDZpVquBgt7psmoi'
-    songs = youtube.get_songs(youtube_playlist_id)
+    youtube_songs = youtube.get_songs(youtube_playlist_id)
 
-    if(songs != None):
+    if(youtube_songs != None):
         print("Songs in youtube playlist:")
-        for song in songs:
+        for song in youtube_songs:
             print(f"{song.track} {song.artist}")
     else:
         print("Unable to retreive song info from youtube")
@@ -19,9 +19,10 @@ def main():
 
     # SPOTIFY
     spotify = spotify_client.SpotifyClient()
+    song_ids = spotify.get_song_ids(youtube_songs)
 
-    song_result = spotify.search_song(songs[0].track, songs[0].artist)
-
+    for song_id in song_ids:
+        print(song_id)
 
 if __name__ == "__main__":
     main()
