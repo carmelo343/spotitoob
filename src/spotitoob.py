@@ -11,7 +11,7 @@ def main():
     if(songs != None):
         print("Songs in youtube playlist:")
         for song in songs:
-            print(f"{song.title} {song.artist}")
+            print(f"{song.track} {song.artist}")
     else:
         print("Unable to retreive song info from youtube")
 
@@ -19,10 +19,8 @@ def main():
 
     # SPOTIFY
     spotify = spotify_client.SpotifyClient()
-    spotify_playlist_id = '37i9dQZF1E35hei03EgTqe'
 
-    response_json = spotify.get_songs_in_playlist(spotify_playlist_id)
-    print(response_json)
+    song_result = spotify.search_song(songs[0].track, songs[0].artist)
 
 
 if __name__ == "__main__":

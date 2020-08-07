@@ -1,4 +1,5 @@
 import requests
+import urllib.parse
 import os
 
 
@@ -11,11 +12,29 @@ class SpotifyClient:
         query = "https://api.spotify.com/v1/playlists/{}/tracks".format(playlist_id)
 
         response = requests.get(query,
-                                headers={"Content-Type": "application/json",
-                                         "Authorization": "Bearer {}".format(self.auth_token)})
+            headers = {
+                "Content-Type": "application/json",
+                "Authorization": f"Bearer {self.auth_token}"
+                }
+            )
 
         response_json = response.json()
         return response_json
+
+    def search_song(self, track, artist):
+        query = urllib.parse.quote(f"{track} {artist}")
+        url = f"https://api.spotify.com/v1/search?q={query}&type=track"
+        response = requests.get(url, 
+            headers = {
+                "Content-Type": "application/json",
+                "Authorization": f"Bearer {self.auth_token}"
+            }
+        )
+
+        reponse_json = response.json()
+        return reponse_json
+
+
 
 
 # Spotify authorization tokens expire after 1hr, we need to request a refresh from Spotify
@@ -31,5 +50,5 @@ class RefreshToken:
                                        "refresh_token": self.refresh_token},
                                  headers={"Authorization": f"Basic {self.client_id_secret_b64}"})
 
-        response = response.json()
-        return response["access_token"]
+        response_json = response.json()
+        return response_json["access_token"]

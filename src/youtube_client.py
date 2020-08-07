@@ -4,8 +4,8 @@ import os
 
 
 class Song:
-  def __init__(self, title, artist):
-    self.title = title
+  def __init__(self, track, artist):
+    self.track = track
     self.artist = artist
 
 class YoutubeClient:
