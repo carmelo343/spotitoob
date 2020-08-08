@@ -9,7 +9,7 @@ class SpotifyClient:
         self.auth_token = RefreshToken().get_token()
     
     def get_songs_in_playlist(self, playlist_id):
-        query = "https://api.spotify.com/v1/playlists/{}/tracks".format(playlist_id)
+        query = f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks"
 
         response = requests.get(query,
             headers = {
@@ -21,8 +21,8 @@ class SpotifyClient:
         response_json = response.json()
         return response_json
 
-    def get_song_ids(self, songs):
-        song_ids = []
+    def get_song_uris(self, songs):
+        song_uris = []
         for song in songs:
             query = urllib.parse.quote(f"{song.track} {song.artist}")
             url = f"https://api.spotify.com/v1/search?q={query}&type=track"
@@ -33,14 +33,28 @@ class SpotifyClient:
                 }
             )
             reponse_json = response.json()
-            song_id = reponse_json['tracks']['items'][0]['id']
-            song_ids.append(song_id)
+            song_uri = reponse_json['tracks']['items'][0]['uri']
+            song_uris.append(song_uri)
 
-        return song_ids
+        return song_uris
+
+    def add_to_playlist(self, playlist_id, song_uris):
+        url = f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks?uris="
+        uris = ','.join(song_uris)
+        url += uris
+
+        response = requests.post(url, 
+                headers = {
+                    "Content-Type": "application/json",
+                    "Authorization": f"Bearer {self.auth_token}"
+                }
+            )
+            
+        reponse_json = response.json()
 
 
 
-# Spotify authorization tokens expire after 1hr, we need to request a refresh from Spotify
+# Spotify authorization tokens expire after 1hr
 class RefreshToken:
     def __init__(self):
         self.refresh_token = os.getenv('SPOTIFY_REFRESH_TOKEN')

@@ -19,10 +19,13 @@ def main():
 
     # SPOTIFY
     spotify = spotify_client.SpotifyClient()
-    song_ids = spotify.get_song_ids(youtube_songs)
+    spotify_playlist_id = "2DAjIdyfwslcmz1YHNH8u6"
+    
+    song_uris = spotify.get_song_uris(youtube_songs)
+    for uri in song_uris:
+        print(uri)
 
-    for song_id in song_ids:
-        print(song_id)
+    spotify.add_to_playlist(spotify_playlist_id, song_uris)
 
 if __name__ == "__main__":
     main()
